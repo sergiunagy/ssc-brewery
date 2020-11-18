@@ -17,10 +17,16 @@
 package guru.sfg.brewery.bootstrap;
 
 import guru.sfg.brewery.domain.*;
+import guru.sfg.brewery.domain.security.Authority;
+import guru.sfg.brewery.domain.security.User;
 import guru.sfg.brewery.repositories.*;
+import guru.sfg.brewery.repositories.security.AuthorityRepository;
+import guru.sfg.brewery.repositories.security.UserRepository;
+import guru.sfg.brewery.security.SfgPasswordEncoderFactories;
 import guru.sfg.brewery.web.model.BeerStyleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -44,13 +50,74 @@ public class DefaultBreweryLoader implements CommandLineRunner {
     private final BeerInventoryRepository beerInventoryRepository;
     private final BeerOrderRepository beerOrderRepository;
     private final CustomerRepository customerRepository;
+    private final AuthorityRepository authorityRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void run(String... args) {
+
+//        loadUserData(); /* moved to separate loader*/
         loadBreweryData();
         loadCustomerData();
     }
 
+//    private void loadUserData(){
+//
+//        Boolean exists = false;
+//
+//        /*get a password encoder*/
+//        PasswordEncoder passwordEncoder = SfgPasswordEncoderFactories.createDelegatingPasswordEncoder();
+//        /*Initialize roles*/
+//        Authority admin  = makeAuthority("ADMIN", 1L);
+//        Authority user = makeAuthority("USER", 2L);
+//        Authority customer = makeAuthority("CUSTOMER", 3L);
+//
+//        authorityRepository.save(admin);
+//        authorityRepository.save(user);
+//        authorityRepository.save(customer);
+//
+//        /*Initialize Users*/
+//        User spring = makeUser("spring", passwordEncoder.encode("guru"), 1L);
+//        User useruser = makeUser("spring", passwordEncoder.encode("pass"), 2L);
+//        User usercustomer = makeUser("scott", passwordEncoder.encode("tiger"), 3L);
+//
+//        /*Add Authorities - Roles*/
+//
+//        spring.getAuthorities().add(admin);
+//        userRepository.save(spring);
+//
+//        useruser.getAuthorities().add(user);
+//        userRepository.save(useruser);
+//
+//        usercustomer.getAuthorities().add(customer);
+//        userRepository.save(usercustomer);
+//
+//    }
+
+//    private User makeUser(String name, String password, Long id){
+//
+//        User user = userRepository.findByUsername(name).orElse(null);
+//        if(user==null) {
+//            user = User.builder()
+//                    .id(id)
+//                    .password(password)
+//                    .username(name)
+//                    .build();
+//        }
+//        return user;
+//    }
+//    private Authority makeAuthority(String role, Long id){
+//
+//        Authority authority = authorityRepository.findByRole(role).orElse(null);
+//        if(authority==null) {
+//            authority = Authority.builder()
+//                    .id(id)
+//                    .role(role)
+//                    .build();
+//        }
+//        return authority;
+//    }
+//
     private void loadCustomerData() {
         Customer tastingRoom = Customer.builder()
                 .customerName(TASTING_ROOM)
